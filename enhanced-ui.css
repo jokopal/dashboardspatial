@@ -1,0 +1,93 @@
+/* Progress Bar Styling */
+.progress-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    margin: 8px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 20px;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+.progress-text {
+    position: absolute;
+    right: 5px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 20px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+
+/* Countdown Timer Styling */
+.countdown-container {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+}
+
+.countdown-active {
+    background-color: #2196F3;
+    color: white;
+}
+
+.countdown-warning {
+    background-color: #FF9800;
+    color: white;
+}
+
+.countdown-danger {
+    background-color: #F44336;
+    color: white;
+}
+
+.countdown-expired {
+    background-color: #9E9E9E;
+    color: white;
+}
+
+/* Error Message Styling */
+.error-message {
+    color: #F44336;
+    font-style: italic;
+    margin: 5px 0;
+}
+
+/* Backup Table Link */
+.backup-link {
+    display: block;
+    margin-top: 10px;
+    color: #2196F3;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 480px) {
+    .progress-container {
+        height: 15px;
+    }
+    
+    .progress-bar {
+        height: 15px;
+    }
+    
+    .progress-text {
+        font-size: 10px;
+        line-height: 15px;
+    }
+    
+    .countdown-container {
+        font-size: 12px;
+        padding: 3px 6px;
+    }
+}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUKS Data Filter - Backup Solution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #2196F3;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .filter-info {
+            background-color: #e3f2fd;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #2196F3;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .expired {
+            background-color: #ffebee;
+        }
+        
+        .warning {
+            background-color: #fff8e1;
+        }
+        
+        .progress-cell {
+            width: 150px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .progress-text {
+            position: absolute;
+            right: 5px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 12px;
+            line-height: 20px;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+        }
+        
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        @media screen and (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            
+            .progress-cell {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TUKS Data Filter</h1>
+        <div class="filter-info">Showing TUKS data with expiration within 3 months</div>
+        
+        <div id="table-container">
+            <table id="tuks-table">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Lokasi</th>
+                        <th>Jenis</th>
+                        <th>Status</th>
+                        <th>Expired</th>
+                        <th>Days Left</th>
+                        <th>Progress</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Data will be populated here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <a href="index.html" class="back-link">Back to Map</a>
+    </div>
+
+    <script src="layers/TUKS_2.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to calculate days between dates
+            function calculateDaysRemaining(expiryDate) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const expiry = new Date(expiryDate);
+                expiry.setHours(0, 0, 0, 0);
+                
+                const timeDiff = expiry.getTime() - today.getTime();
+                return Math.ceil(timeDiff / (1000 * 3600 * 24));
+            }
+            
+            // Function to create progress bar
+            function createProgressBar(value) {
+                const progress = parseInt(value);
+                if (isNaN(progress) || progress < 0 || progress > 100) {
+                    return `<div>Invalid progress: ${value}</div>`;
+                }
+                
+                return `
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${progress}%">
+                            <span class="progress-text">${progress}%</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Function to populate table with filtered data
+            function populateTable() {
+                const tableBody = document.getElementById('table-body');
+                
+                // Check if TUKS_2 data is available
+                if (typeof json_TUKS_2 === 'undefined') {
+                    tableBody.innerHTML = '<tr><td colspan="7">Error: TUKS data not found</td></tr>';
+                    return;
+                }
+                
+                // Get features from the GeoJSON
+                const features = json_TUKS_2.features;
+                
+                // Filter features that expire within 3 months
+                const threeMonthsInDays = 90;
+                const filteredFeatures = features.filter(feature => {
+                    if (!feature.properties.Expired) return false;
+                    
+                    const daysRemaining = calculateDaysRemaining(feature.properties.Expired);
+                    return daysRemaining <= threeMonthsInDays;
+                });
+                
+                // Sort by days remaining (ascending)
+                filteredFeatures.sort((a, b) => {
+                    const daysA = calculateDaysRemaining(a.properties.Expired);
+                    const daysB = calculateDaysRemaining(b.properties.Expired);
+                    return daysA - daysB;
+                });
+                
+                // Generate table rows
+                if (filteredFeatures.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="7">No TUKS data expiring within 3 months</td></tr>';
+                } else {
+                    let tableContent = '';
+                    
+                    filteredFeatures.forEach(feature => {
+                        const props = feature.properties;
+                        const daysRemaining = calculateDaysRemaining(props.Expired);
+                        
+                        // Determine row class based on days remaining
+                        let rowClass = '';
+                        if (daysRemaining < 0) {
+                            rowClass = 'expired';
+                        } else if (daysRemaining <= 30) {
+                            rowClass = 'warning';
+                        }
+                        
+                        // Format days remaining text
+                        let daysText = daysRemaining < 0 ? 'EXPIRED' : `${daysRemaining} days`;
+                        
+                        tableContent += `
+                            <tr class="${rowClass}">
+                                <td>${props.Nama || '-'}</td>
+                                <td>${props.Lokasi || '-'}</td>
+                                <td>${props.Jenis || '-'}</td>
+                                <td>${props.Status || '-'}</td>
+                                <td>${props.Expired || '-'}</td>
+                                <td>${daysText}</td>
+                                <td class="progress-cell">${createProgressBar(props.Progress)}</td>
+                            </tr>
+                        `;
+                    });
+                    
+                    tableBody.innerHTML = tableContent;
+                }
+            }
+            
+            // Initialize the table
+            populateTable();
+        });
+    </script>
+</body>
+</html>
