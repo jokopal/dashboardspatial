@@ -6,13 +6,13 @@ var map = new ol.Map({
     view: new ol.View({
          maxZoom: 28, minZoom: 1, projection: new ol.proj.Projection({
             code: 'EPSG:4326',
-            //extent: [117.410000, 2.160833, 117.605250, 2.214972],
+            //extent: [116.663583, 1.899960, 117.605250, 3.353206],
             units: 'degrees'})
     })
 });
 
 //initial view - epsg:3857 coordinates if not "Match project CRS"
-map.getView().fit([117.410000, 2.160833, 117.605250, 2.214972], map.getSize());
+map.getView().fit([116.663583, 1.899960, 117.605250, 3.353206], map.getSize());
 
 ////small screen definition
     var hasTouchScreen = map.getViewport().classList.contains('ol-touch');
@@ -1096,8 +1096,8 @@ let measuring = false;
 //layer search
 
 var searchLayer = new SearchLayer({
-    layer: lyr_TUKS_2,
-    colName: 'field_4',
+    layer: lyr_Titik_5,
+    colName: 'Izin',
     zoom: 10,
     collapsed: true,
     map: map,

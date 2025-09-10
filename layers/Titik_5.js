@@ -1,6 +1,6 @@
-var json_TUKS_2 = {
+var json_Titik_5 = {
 "type": "FeatureCollection",
-"name": "TUKS_2",
+"name": "Titik_5",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
 { "type": "Feature", "properties": { "latitude": 2.18001, "longitude": 117.57919, "Site": "SMO", "field_4": "TUKS_Dermaga II", "Izin": "BA-SPK-Billing Sewa Perairan TUKS Site Gurimbang", "Nomor SK": "AL.203/3/20/UPP.Trb/2025", "Terbit": "2025-03-04", "Expired": "2025-09-05", "Progress": "100", "LinkLap": "https://img.lovepik.com/element/40050/3488.png_860.png" }, "geometry": { "type": "Point", "coordinates": [ 117.5791945, 2.180014 ] } },

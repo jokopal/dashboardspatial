@@ -1,7 +1,7 @@
 var size = 0;
 var placement = 'point';
 
-var style_TUKS_2 = function(feature, resolution){
+var style_Titik_5 = function(feature, resolution){
     var context = {
         feature: feature,
         variables: {}
@@ -21,15 +21,8 @@ var style_TUKS_2 = function(feature, resolution){
         labelText = String("");
     }
     var style = [ new ol.style.Style({
-        image: new ol.style.Icon({
-                  imgSize: [15, 15],
-                  scale: 1.2666666666666666,
-                  anchor: [7.5, 7.5],
-                  anchorXUnits: "pixels",
-                  anchorYUnits: "pixels",
-                  rotation: 0.0,
-                  src: "styles/embedded.svg"
-            }),
+        image: new ol.style.Circle({radius: 4.0 + size,
+            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(255,255,255,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 1.52}), fill: new ol.style.Fill({color: 'rgba(0,0,0,1.0)'})}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)

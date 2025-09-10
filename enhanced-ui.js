@@ -24,21 +24,28 @@ function enhancePopupContent(popupContent, feature) {
         return;
     }
     
-    // Remove any existing "Progress:" text line
-    removeExistingElement(popupContent, 'Progress:');
-    
-    // Add progress bar if Progress property exists
-    if ('Progress' in properties) {
-        try {
-            addProgressBar(popupContent, properties.Progress);
-        } catch (error) {
-            console.error("Error adding progress bar:", error);
+    // Process all integer properties between 0-100 as progress bars
+    for (const key in properties) {
+        const value = properties[key];
+        
+        // Check if the value is an integer between 0 and 100
+        if (Number.isInteger(Number(value)) && value >= 0 && value <= 100) {
+            try {
+                // Remove any existing text line for this property
+                removeExistingElement(popupContent, `${key}:`);
+                
+                // Add progress bar with the property name as label
+                addProgressBar(popupContent, value, key);
+            } catch (error) {
+                console.error(`Error adding progress bar for ${key}:`, error);
+            }
         }
     }
     
     // Add countdown timer if Expired property exists
     if ('Expired' in properties) {
         try {
+            removeExistingElement(popupContent, 'Expired:');
             addCountdownTimer(popupContent, properties.Expired);
         } catch (error) {
             console.error("Error adding countdown timer:", error);
@@ -107,15 +114,16 @@ function removeExistingElement(container, text) {
  * Creates and adds a progress bar to the popup content
  * @param {HTMLElement} container - The container element
  * @param {number} value - The progress value (0-100)
+ * @param {string} labelText - The label text for the progress bar (default: 'Progress')
  */
-function addProgressBar(container, value) {
+function addProgressBar(container, value, labelText = 'Progress') {
     // Validate progress value
     const progress = parseInt(value);
     if (isNaN(progress) || progress < 0 || progress > 100) {
         throw new Error("Invalid progress value");
     }
     
-    console.log("Adding progress bar with value:", progress);
+    console.log(`Adding progress bar for ${labelText} with value:`, progress);
     
     // Create progress bar container
     const progressContainer = document.createElement('div');
@@ -137,7 +145,7 @@ function addProgressBar(container, value) {
     
     // Add label
     const label = document.createElement('strong');
-    label.textContent = 'Progress: ';
+    label.textContent = `${labelText}: `;
     
     // Create wrapper div
     const wrapper = document.createElement('div');
