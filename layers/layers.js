@@ -88,27 +88,27 @@ var lyr_Titik_5 = new ol.layer.Vector({
             });
 var group_Izin2025 = new ol.layer.Group({
                                 layers: [lyr_Area_4,lyr_Titik_5,],
-                                fold: 'close',
+                                fold: 'open',
                                 title: 'Izin 2025'});
 var group_Izin2024 = new ol.layer.Group({
                                 layers: [lyr_BK_2,lyr_GD_3,],
-                                fold: 'close',
+                                fold: 'open',
                                 title: 'Izin 2024'});
 
 lyr_OSMStandard_0.setVisible(true);lyr_GoogleSatellite_1.setVisible(true);lyr_BK_2.setVisible(true);lyr_GD_3.setVisible(true);lyr_Area_4.setVisible(true);lyr_Titik_5.setVisible(true);
 var layersList = [lyr_OSMStandard_0,lyr_GoogleSatellite_1,group_Izin2024,group_Izin2025];
-lyr_BK_2.set('fieldAliases', {'Id': 'Id', 'Izin': 'Izin', 'Berlaku': 'Berlaku', 'Keterangan': 'Keterangan', 'Progress': 'Progress', });
-lyr_GD_3.set('fieldAliases', {'Id': 'Id', 'Izin': 'Izin', 'Berlaku': 'Berlaku', 'Keterangan': 'Keterangan', 'Progress': 'Progress', });
-lyr_Area_4.set('fieldAliases', {'Layer': 'Layer', 'id': 'id', 'Izin': 'Izin', 'Nomor_SK': 'Nomor_SK', 'Terbit': 'Terbit', 'Expired': 'Expired', 'Progres': 'Progres', 'Izin_Turun': 'Izin Turunan', 'FlowPro': 'Flow Proses', });
+lyr_BK_2.set('fieldAliases', {'Izin': 'Izin', 'Berlaku': 'Berlaku', 'Keterangan': 'Keterangan', 'Progress': 'Progress', });
+lyr_GD_3.set('fieldAliases', {'Izin': 'Izin', 'Berlaku': 'Berlaku', 'Keterangan': 'Keterangan', 'Progress': 'Progress', });
+lyr_Area_4.set('fieldAliases', {'Layer': 'Layer', 'Izin': 'Izin', 'Nomor_SK': 'Nomor_SK', 'Terbit': 'Terbit', 'Expired': 'Expired', 'Progres': 'Progress', 'Izin_Turun': 'Izin Turunan', 'FlowPro': 'Flow Proses', });
 lyr_Titik_5.set('fieldAliases', {'latitude': 'latitude', 'longitude': 'longitude', 'Site': 'Site', 'field_4': 'Objek', 'Izin': 'Izin', 'Nomor SK': 'Nomor SK', 'Terbit': 'Terbit', 'Expired': 'Expired', 'Progress': 'Progress', 'LinkLap': 'Report', });
-lyr_BK_2.set('fieldImages', {'Id': '', 'Izin': '', 'Berlaku': '', 'Keterangan': '', 'Progress': '', });
-lyr_GD_3.set('fieldImages', {'Id': 'Range', 'Izin': 'TextEdit', 'Berlaku': 'TextEdit', 'Keterangan': 'TextEdit', 'Progress': 'Range', });
-lyr_Area_4.set('fieldImages', {'Layer': 'TextEdit', 'id': 'TextEdit', 'Izin': 'TextEdit', 'Nomor_SK': 'TextEdit', 'Terbit': 'DateTime', 'Expired': 'DateTime', 'Progres': 'TextEdit', 'Izin_Turun': 'TextEdit', 'FlowPro': 'TextEdit', });
+lyr_BK_2.set('fieldImages', {'Izin': '', 'Berlaku': '', 'Keterangan': '', 'Progress': '', });
+lyr_GD_3.set('fieldImages', {'Izin': 'TextEdit', 'Berlaku': 'TextEdit', 'Keterangan': 'TextEdit', 'Progress': 'Range', });
+lyr_Area_4.set('fieldImages', {'Layer': 'TextEdit', 'Izin': 'TextEdit', 'Nomor_SK': 'TextEdit', 'Terbit': 'DateTime', 'Expired': 'DateTime', 'Progres': 'TextEdit', 'Izin_Turun': 'TextEdit', 'FlowPro': 'TextEdit', });
 lyr_Titik_5.set('fieldImages', {'latitude': 'TextEdit', 'longitude': 'TextEdit', 'Site': 'TextEdit', 'field_4': 'TextEdit', 'Izin': 'TextEdit', 'Nomor SK': 'TextEdit', 'Terbit': 'DateTime', 'Expired': 'DateTime', 'Progress': 'TextEdit', 'LinkLap': 'UniqueValues', });
-lyr_BK_2.set('fieldLabels', {'Id': 'no label', 'Izin': 'no label', 'Berlaku': 'no label', 'Keterangan': 'no label', 'Progress': 'no label', });
-lyr_GD_3.set('fieldLabels', {'Id': 'no label', 'Izin': 'no label', 'Berlaku': 'no label', 'Keterangan': 'no label', 'Progress': 'no label', });
-lyr_Area_4.set('fieldLabels', {'Layer': 'hidden field', 'id': 'hidden field', 'Izin': 'inline label - always visible', 'Nomor_SK': 'inline label - always visible', 'Terbit': 'inline label - always visible', 'Expired': 'inline label - always visible', 'Progres': 'inline label - always visible', 'Izin_Turun': 'inline label - visible with data', 'FlowPro': 'inline label - visible with data', });
-lyr_Titik_5.set('fieldLabels', {'latitude': 'hidden field', 'longitude': 'hidden field', 'Site': 'inline label - always visible', 'field_4': 'inline label - always visible', 'Izin': 'inline label - always visible', 'Nomor SK': 'inline label - always visible', 'Terbit': 'inline label - always visible', 'Expired': 'inline label - always visible', 'Progress': 'inline label - visible with data', 'LinkLap': 'inline label - visible with data', });
+lyr_BK_2.set('fieldLabels', {'Izin': 'no label', 'Berlaku': 'no label', 'Keterangan': 'no label', 'Progress': 'hidden field', });
+lyr_GD_3.set('fieldLabels', {'Izin': 'no label', 'Berlaku': 'no label', 'Keterangan': 'no label', 'Progress': 'hidden field', });
+lyr_Area_4.set('fieldLabels', {'Layer': 'hidden field', 'Izin': 'inline label - always visible', 'Nomor_SK': 'inline label - always visible', 'Terbit': 'inline label - always visible', 'Expired': 'inline label - always visible', 'Progres': 'hidden field', 'Izin_Turun': 'hidden field', 'FlowPro': 'hidden field', });
+lyr_Titik_5.set('fieldLabels', {'latitude': 'hidden field', 'longitude': 'hidden field', 'Site': 'inline label - always visible', 'field_4': 'inline label - always visible', 'Izin': 'inline label - always visible', 'Nomor SK': 'inline label - always visible', 'Terbit': 'inline label - always visible', 'Expired': 'inline label - always visible', 'Progress': 'hidden field', 'LinkLap': 'hidden field', });
 lyr_Titik_5.on('precompose', function(evt) {
     evt.context.globalCompositeOperation = 'normal';
 });

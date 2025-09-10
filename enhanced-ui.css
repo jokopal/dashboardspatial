@@ -1,4 +1,12 @@
-/* Progress Bar Styling */
+/* =============================================================================
+   TUKS Dashboard Enhanced UI Styles
+   ============================================================================= */
+
+/* =============================================================================
+   PROGRESS BAR COMPONENTS
+   ============================================================================= */
+
+/* Progress Bar Container */
 .progress-container {
     width: 100%;
     background-color: #e0e0e0;
@@ -7,6 +15,7 @@
     overflow: hidden;
 }
 
+/* Progress Bar Fill */
 .progress-bar {
     height: 20px;
     background: linear-gradient(90deg, #4CAF50, #8BC34A);
@@ -15,6 +24,7 @@
     position: relative;
 }
 
+/* Progress Bar Text */
 .progress-text {
     position: absolute;
     right: 5px;
@@ -25,7 +35,11 @@
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
 
-/* Countdown Timer Styling */
+/* =============================================================================
+   COUNTDOWN TIMER COMPONENTS
+   ============================================================================= */
+
+/* Countdown Timer Base */
 .countdown-container {
     margin-top: 10px;
     padding: 5px 10px;
@@ -35,6 +49,7 @@
     display: inline-block;
 }
 
+/* Countdown Timer States */
 .countdown-active {
     background-color: #2196F3;
     color: white;
@@ -55,7 +70,69 @@
     color: white;
 }
 
-/* Error Message Styling */
+/* =============================================================================
+   LINK BUTTON COMPONENTS
+   ============================================================================= */
+
+/* Link Container */
+.link-container {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Link Button */
+.link-button {
+    display: inline-block;
+    padding: 4px 10px;
+    margin-left: 5px;
+    background-color: #2196F3;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.link-button:hover {
+    background-color: #0b7dda;
+}
+
+/* =============================================================================
+   EXCEL DASHBOARD BUTTON COMPONENTS
+   ============================================================================= */
+
+/* Popup Separator */
+.popup-separator {
+    margin: 15px 0 10px;
+    border: 0;
+    border-top: 1px solid #ddd;
+}
+
+/* Excel Dashboard Button */
+.excel-dashboard-button {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.excel-dashboard-button:hover {
+    background-color: #45a049;
+}
+
+/* =============================================================================
+   ERROR HANDLING COMPONENTS
+   ============================================================================= */
+
+/* Error Message */
 .error-message {
     color: #F44336;
     font-style: italic;
@@ -71,8 +148,13 @@
     cursor: pointer;
 }
 
+/* =============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================= */
+
 /* Mobile Responsiveness */
 @media screen and (max-width: 480px) {
+    /* Progress Bar Mobile Adjustments */
     .progress-container {
         height: 15px;
     }
@@ -86,6 +168,7 @@
         line-height: 15px;
     }
     
+    /* Countdown Timer Mobile Adjustments */
     .countdown-container {
         font-size: 12px;
         padding: 3px 6px;

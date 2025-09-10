@@ -3,68 +3,28 @@
  * Includes progress bar visualization and countdown timer
  */
 
+// =============================================================================
+// GLOBAL VARIABLES
+// =============================================================================
+
 // Global variable to track if countdown has errors
 let countdownHasError = false;
 
+// =============================================================================
+// UTILITY FUNCTIONS
+// =============================================================================
+
 /**
- * Enhances the popup content with progress bar and countdown timer
- * @param {HTMLElement} popupContent - The popup content element
- * @param {Object} feature - The GeoJSON feature with properties
+ * Checks if a string is a valid URL
+ * @param {string} str - The string to check
+ * @returns {boolean} - True if the string is a valid URL
  */
-function enhancePopupContent(popupContent, feature) {
-    if (!popupContent || !feature) return;
-    
-    console.log("Enhancing popup for feature:", feature.getProperties());
-    const properties = feature.getProperties();
-    
-    // Check if we've already enhanced this popup
-    if (popupContent.querySelector('.progress-container') || 
-        popupContent.querySelector('.countdown-container')) {
-        console.log("Popup already enhanced, skipping");
-        return;
-    }
-    
-    // Process all integer properties between 0-100 as progress bars
-    for (const key in properties) {
-        const value = properties[key];
-        
-        // Check if the value is an integer between 0 and 100
-        if (Number.isInteger(Number(value)) && value >= 0 && value <= 100) {
-            try {
-                // Remove any existing text line for this property
-                removeExistingElement(popupContent, `${key}:`);
-                
-                // Add progress bar with the property name as label
-                addProgressBar(popupContent, value, key);
-            } catch (error) {
-                console.error(`Error adding progress bar for ${key}:`, error);
-            }
-        }
-    }
-    
-    // Add countdown timer if Expired property exists
-    if ('Expired' in properties) {
-        try {
-            removeExistingElement(popupContent, 'Expired:');
-            addCountdownTimer(popupContent, properties.Expired);
-        } catch (error) {
-            console.error("Error adding countdown timer:", error);
-            countdownHasError = true;
-            
-            // Add link to backup solution
-            const errorMsg = document.createElement('div');
-            errorMsg.className = 'error-message';
-            errorMsg.textContent = 'Error calculating expiration date';
-            
-            const backupLink = document.createElement('a');
-            backupLink.className = 'backup-link';
-            backupLink.textContent = 'View filtered data table';
-            backupLink.href = 'filter-backup.html';
-            backupLink.target = '_blank';
-            
-            popupContent.appendChild(errorMsg);
-            popupContent.appendChild(backupLink);
-        }
+function isValidURL(str) {
+    try {
+        new URL(str);
+        return true;
+    } catch (e) {
+        return false;
     }
 }
 
@@ -109,6 +69,10 @@ function removeExistingElement(container, text) {
         }
     });
 }
+
+// =============================================================================
+// UI COMPONENT CREATION FUNCTIONS
+// =============================================================================
 
 /**
  * Creates and adds a progress bar to the popup content
@@ -155,6 +119,61 @@ function addProgressBar(container, value, labelText = 'Progress') {
     // Add to container
     container.appendChild(wrapper);
 }
+
+/**
+ * Creates and adds a button link to the popup content
+ * @param {HTMLElement} container - The container element
+ * @param {string} url - The URL to link to
+ * @param {string} labelText - The label text for the button
+ */
+function addButtonLink(container, url, labelText) {
+    console.log(`Adding button link for ${labelText} with URL:`, url);
+    
+    // Create button
+    const button = document.createElement('a');
+    button.className = 'link-button';
+    button.href = url;
+    button.target = '_blank';
+    button.textContent = 'Lihat';
+    
+    // Add label
+    const label = document.createElement('strong');
+    label.textContent = `${labelText}: `;
+    
+    // Create wrapper div
+    const wrapper = document.createElement('div');
+    wrapper.className = 'link-container';
+    wrapper.appendChild(label);
+    wrapper.appendChild(button);
+    
+    // Add to container
+    container.appendChild(wrapper);
+}
+
+/**
+ * Adds an Excel dashboard button at the bottom of the popup
+ * @param {HTMLElement} container - The container element
+ */
+function addExcelDashboardButton(container) {
+    // Create a separator
+    const separator = document.createElement('hr');
+    separator.className = 'popup-separator';
+    
+    // Create button
+    const button = document.createElement('a');
+    button.className = 'excel-dashboard-button';
+    button.href = 'excel-dashboard.html';
+    button.target = '_blank';
+    button.textContent = 'Lihat Dashboard Excel';
+    
+    // Add to container
+    container.appendChild(separator);
+    container.appendChild(button);
+}
+
+// =============================================================================
+// COUNTDOWN TIMER FUNCTIONS
+// =============================================================================
 
 /**
  * Creates and adds a countdown timer to the popup content
@@ -260,6 +279,99 @@ function updateCountdown(countdownElement, expiryDate) {
 }
 
 /**
+ * Handles countdown timer errors by adding backup links
+ * @param {HTMLElement} popupContent - The popup content element
+ */
+function handleCountdownError(popupContent) {
+    console.error("Error adding countdown timer");
+    countdownHasError = true;
+    
+    // Add link to backup solution
+    const errorMsg = document.createElement('div');
+    errorMsg.className = 'error-message';
+    errorMsg.textContent = 'Error calculating expiration date';
+    
+    const backupLink = document.createElement('a');
+    backupLink.className = 'backup-link';
+    backupLink.textContent = 'View filtered data table';
+    backupLink.href = 'filter-backup.html';
+    backupLink.target = '_blank';
+    
+    popupContent.appendChild(errorMsg);
+    popupContent.appendChild(backupLink);
+}
+
+// =============================================================================
+// MAIN ENHANCEMENT FUNCTION
+// =============================================================================
+
+/**
+ * Enhances the popup content with progress bar and countdown timer
+ * @param {HTMLElement} popupContent - The popup content element
+ * @param {Object} feature - The GeoJSON feature with properties
+ */
+function enhancePopupContent(popupContent, feature) {
+    if (!popupContent || !feature) return;
+    
+    console.log("Enhancing popup for feature:", feature.getProperties());
+    const properties = feature.getProperties();
+    
+    // Check if we've already enhanced this popup
+    if (popupContent.querySelector('.progress-container') || 
+        popupContent.querySelector('.countdown-container')) {
+        console.log("Popup already enhanced, skipping");
+        return;
+    }
+    
+    // Process all properties for progress bars and button links
+    for (const key in properties) {
+        const value = properties[key];
+        
+        // Check if the value is an integer between 0 and 100 (progress bar)
+        if (Number.isInteger(Number(value)) && value >= 0 && value <= 100) {
+            try {
+                // Remove any existing text line for this property
+                removeExistingElement(popupContent, `${key}:`);
+                
+                // Add progress bar with the property name as label
+                addProgressBar(popupContent, value, key);
+            } catch (error) {
+                console.error(`Error adding progress bar for ${key}:`, error);
+            }
+        }
+        // Check if the value is a URL (for fields like "Izin Turunan" or "Flow Proses")
+        else if (typeof value === 'string' && (isValidURL(value) || value.includes('http'))) {
+            try {
+                // Remove any existing text line for this property
+                removeExistingElement(popupContent, `${key}:`);
+                
+                // Add button link with the property name as label
+                addButtonLink(popupContent, value, key);
+            } catch (error) {
+                console.error(`Error adding button link for ${key}:`, error);
+            }
+        }
+    }
+    
+    // Add countdown timer if Expired property exists
+    if ('Expired' in properties) {
+        try {
+            removeExistingElement(popupContent, 'Expired:');
+            addCountdownTimer(popupContent, properties.Expired);
+        } catch (error) {
+            handleCountdownError(popupContent);
+        }
+    }
+    
+    // Add Excel dashboard button at the bottom of popup
+    addExcelDashboardButton(popupContent);
+}
+
+// =============================================================================
+// POPUP INTEGRATION FUNCTIONS
+// =============================================================================
+
+/**
  * Direct integration with OpenLayers popup mechanism
  */
 function setupPopupEnhancement() {
@@ -315,6 +427,10 @@ function setupPopupEnhancement() {
         };
     }
 }
+
+// =============================================================================
+// INITIALIZATION
+// =============================================================================
 
 // Wait for the document to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
