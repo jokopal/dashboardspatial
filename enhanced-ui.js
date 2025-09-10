@@ -17,6 +17,16 @@ function enhancePopupContent(popupContent, feature) {
     console.log("Enhancing popup for feature:", feature.getProperties());
     const properties = feature.getProperties();
     
+    // Check if we've already enhanced this popup
+    if (popupContent.querySelector('.progress-container') || 
+        popupContent.querySelector('.countdown-container')) {
+        console.log("Popup already enhanced, skipping");
+        return;
+    }
+    
+    // Remove any existing "Progress:" text line
+    removeExistingElement(popupContent, 'Progress:');
+    
     // Add progress bar if Progress property exists
     if ('Progress' in properties) {
         try {
@@ -52,6 +62,48 @@ function enhancePopupContent(popupContent, feature) {
 }
 
 /**
+ * Removes existing text elements that match a specific text
+ * @param {HTMLElement} container - The container to search in
+ * @param {string} text - The text to search for
+ */
+function removeExistingElement(container, text) {
+    // Find all text nodes and elements
+    const walker = document.createTreeWalker(
+        container,
+        NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
+        null,
+        false
+    );
+    
+    const nodesToRemove = [];
+    let currentNode;
+    
+    // Collect nodes that contain the text
+    while (currentNode = walker.nextNode()) {
+        if (currentNode.nodeType === Node.TEXT_NODE && 
+            currentNode.textContent.includes(text)) {
+            nodesToRemove.push(currentNode);
+        } else if (currentNode.nodeType === Node.ELEMENT_NODE && 
+                  !currentNode.classList.contains('progress-container') &&
+                  !currentNode.classList.contains('countdown-container') &&
+                  currentNode.textContent.includes(text) && 
+                  !currentNode.querySelector('.progress-container') &&
+                  !currentNode.querySelector('.countdown-container')) {
+            nodesToRemove.push(currentNode);
+        }
+    }
+    
+    // Remove the collected nodes
+    nodesToRemove.forEach(node => {
+        try {
+            node.parentNode.removeChild(node);
+        } catch (e) {
+            console.error("Error removing node:", e);
+        }
+    });
+}
+
+/**
  * Creates and adds a progress bar to the popup content
  * @param {HTMLElement} container - The container element
  * @param {number} value - The progress value (0-100)
@@ -64,32 +116,6 @@ function addProgressBar(container, value) {
     }
     
     console.log("Adding progress bar with value:", progress);
-    
-    // Find the text node or element containing the progress value
-    let progressTextFound = false;
-    Array.from(container.childNodes).forEach(node => {
-        // Check for text nodes
-        if (node.nodeType === Node.TEXT_NODE && node.textContent.includes("Progress: " + value)) {
-            container.removeChild(node);
-            progressTextFound = true;
-        }
-        
-        // Also check for elements that might contain the progress text
-        if (node.nodeType === Node.ELEMENT_NODE) {
-            if (node.textContent.includes("Progress: " + value)) {
-                // If it's a simple element with just this text, remove it
-                if (node.childNodes.length === 1 && node.childNodes[0].nodeType === Node.TEXT_NODE) {
-                    container.removeChild(node);
-                    progressTextFound = true;
-                }
-            }
-        }
-    });
-    
-    // If we didn't find and remove the progress text, we'll just add our progress bar
-    if (!progressTextFound) {
-        console.log("Progress text not found, will add progress bar without removing existing text");
-    }
     
     // Create progress bar container
     const progressContainer = document.createElement('div');
@@ -268,6 +294,14 @@ function setupPopupEnhancement() {
         window.createPopupContent = function(feature, layer) {
             console.log("Custom createPopupContent called");
             const popupContent = originalCreatePopupContent(feature, layer);
+            
+            // Clean up any existing progress or expiration elements
+            const existingProgress = popupContent.querySelectorAll('.progress-container');
+            const existingCountdown = popupContent.querySelectorAll('.countdown-container');
+            
+            existingProgress.forEach(el => el.parentNode.removeChild(el));
+            existingCountdown.forEach(el => el.parentNode.removeChild(el));
+            
             enhancePopupContent(popupContent, feature);
             return popupContent;
         };
