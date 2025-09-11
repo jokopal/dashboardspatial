@@ -1,95 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Excel Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .header {
-            background-color: #2196F3;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px 5px 0 0;
-            margin-bottom: 20px;
-        }
-        
-        .excel-container {
-            margin-bottom: 30px;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .excel-header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            font-weight: bold;
-        }
-        
-        .excel-content {
-            height: 500px;
-            width: 100%;
-            border: none;
-        }
-        
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #f44336;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 20px;
-        }
-        
-        .back-button:hover {
-            background-color: #d32f2f;
-        }
-    </style>
+    <link rel="stylesheet" href="dashboard/style.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <!-- Grid 6: Header with Title and Back Button -->
+        <header class="grid6">
             <h1>Dashboard Excel</h1>
-            <p>Informasi Flow Proses dan Izin Turunan</p>
-        </div>
-        
-        <!-- First Excel (Flow Proses) -->
-        <div class="excel-container">
-            <div class="excel-header">Flow Proses</div>
-            <iframe class="excel-content" src="https://docs.google.com/spreadsheets/d/1lWz5c8MmMHouoHeGra2KN-_u-94ELBey/edit?usp=sharing&ouid=117324914930655511943&rtpof=true&sd=true"></iframe>
-        </div>
-        
-        <!-- Second Excel (Izin Turunan) -->
-        <div class="excel-container">
-            <div class="excel-header">Izin Turunan</div>
-            <iframe class="excel-content" src="https://docs.google.com/spreadsheets/d/1lWz5c8MmMHouoHeGra2KN-_u-94ELBey/edit?usp=sharing&ouid=117324914930655511943&rtpof=true&sd=true"></iframe>
-        </div>
-        
-        <a href="index.html" class="back-button">Kembali ke Peta</a>
+            <a href="index.html" class="back-button">Kembali ke Map</a>
+            <!-- Update info bar will be added here by JavaScript -->
+        </header>
+
+        <!-- Grid 2: Excel Izin Turunan -->
+        <section class="grid2 card">
+            <h2>Excel Izin Turunan</h2>
+            <iframe class="excel-frame" 
+                src="https://docs.google.com/spreadsheets/d/1lWz5c8MmMHouoHeGra2KN-_u-94ELBey/htmlembed?widget=true&headers=false&chrome=false">
+            </iframe>
+        </section>
+
+        <!-- Grid 4: Progress Chart -->
+        <section class="grid4 card">
+            <h2>Grafik Progress</h2>
+            <div id="chart-progress">
+                <iframe class="excel-frame" 
+                    src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4IzoZlpjeeNfqkIpFUAqP1eCmf1ZUu9H76eimldVP1cvgajpzF98U26CmPhwZAw/pubchart?oid=2129329733&format=interactive">
+                </iframe>
+            </div>
+        </section>
+
+        <!-- Grid 3: Excel Flow Proses -->
+        <section class="grid3 card">
+            <h2>Excel Flow Proses</h2>
+            <iframe class="excel-frame" 
+                src="https://docs.google.com/spreadsheets/d/1lWz5c8MmMHouoHeGra2KN-_u-94ELBey/htmlembed?widget=true&headers=false&chrome=false">
+            </iframe>
+        </section>
+
+        <!-- Grid 5: Status Chart -->
+        <section class="grid5 card">
+            <h2>Status Ijin (Aktif vs Expired)</h2>
+            <div id="chart-status">
+                <iframe class="excel-frame" 
+                    src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4IzoZlpjeeNfqkIpFUAqP1eCmf1ZUu9H76eimldVP1cvgajpzF98U26CmPhwZAw/pubchart?oid=269158860&format=interactive">
+                </iframe>
+            </div>
+        </section>
     </div>
-    
-    <script>
-        // You can add JavaScript here if needed
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Excel Dashboard loaded');
-        });
-    </script>
+
+    <!-- Load JavaScript from dashboard folder -->
+    <script src="dashboard/ui.js"></script>
 </body>
 </html>
